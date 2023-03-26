@@ -3,11 +3,12 @@ import { BaseColaboradores } from "./BaseColaboradores";
 
 function App() {
   const [colaboradores, setColaboradores] = useState(BaseColaboradores)
-  const {nuevoColaborador, setNuevoColaborador} = useState({
+  const [nuevoColaborador, setNuevoColaborador] = useState({
     id:"",
     nombre:"",
     correo: ""
   });
+  const [busqueda, setBusqueda] = useState ("");
   
 const agregarColaborador = (e) => {
   e.preventDefault();
@@ -16,11 +17,6 @@ const agregarColaborador = (e) => {
     return alert ("Faltan campos por llenar")
   }
 
-  setNuevoColaborador({
-    id: Date.now(),
-    nombre: nuevoColaborador.nombre,
-    correo: nuevoColaborador.correo
-  });
 
   setColaboradores([...colaboradores, nuevoColaborador ]);
 
@@ -32,6 +28,14 @@ const agregarColaborador = (e) => {
 
 }
 
+const colaboradoresFiltrados = colaboradores.filter((colaborador) => {
+  if(colaborador.nombre.toLowerCase().includes(busqueda.toLowerCase() )){
+    return true;
+
+  }
+  return false;
+});
+
   return (
 <div className="container">
   <nav>
@@ -39,6 +43,9 @@ const agregarColaborador = (e) => {
       nav class="navbar bg-dark form-control me-2 my-3 " data-bs-theme="dark"
       className="form-control me-2 my-3"
       placeholder="Buscar un colaborador" 
+      onChange={(e) => setBusqueda(e.target.value)}
+        value={busqueda}
+      
     />
   </nav>
 
@@ -49,9 +56,10 @@ const agregarColaborador = (e) => {
 <label> Nombre del colaborador</label>
 <input 
 className="form-control me-2 my-3"
+placeholder="Ingresa el nombre de un colaborador" 
 type="text"
 onChange={(e) => setNuevoColaborador({
-  id: nuevoColaborador.id,
+  id: Date.now(),
   nombre: e.target.value,
   correo: nuevoColaborador.correo
 })}
@@ -60,14 +68,15 @@ onChange={(e) => setNuevoColaborador({
 </div>
 
 <div className="mt-3">
-<label> Correo del colaborador</label>
+<label> Correo del colaborador </label>
 <input 
 className="form-control me-2 my-3"
+placeholder="Ingresa el correo del colaborador"
 type="email"
 onChange={(e) => setNuevoColaborador({
-  id: nuevoColaborador.id,
+  id: Date.now(),
   nombre: nuevoColaborador.nombre,
-  correo: e.target.value,
+  correo: e.target.value
 })}
   value={nuevoColaborador.correo}
 />
@@ -88,7 +97,7 @@ type="submit"
       Listado de Colaboradores
     </h4>
     <ul> 
-      {colaboradores.map(({id,nombre,correo}) => <li key={id}>{nombre} | {correo}</li>)}
+      {colaboradoresFiltrados.map(({id,nombre,correo}) => <li key={id}>{nombre} | {correo}</li>)}
     </ul>
 </div>
 
