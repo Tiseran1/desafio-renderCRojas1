@@ -12,9 +12,24 @@ function App() {
 const agregarColaborador = (e) => {
   e.preventDefault();
 
-  if(nuevoColaborador.nombre =="" || nuevoColaborador.correo == ""){
+  if(nuevoColaborador.nombre ==="" || nuevoColaborador.correo === ""){
     return alert ("Faltan campos por llenar")
   }
+
+  setNuevoColaborador({
+    id: Date.now(),
+    nombre: nuevoColaborador.nombre,
+    correo: nuevoColaborador.correo
+  });
+
+  setColaboradores([...colaboradores, nuevoColaborador ]);
+
+  setNuevoColaborador({
+    id:"",
+    nombre:"",
+    correo: ""
+  });
+
 }
 
   return (
@@ -73,8 +88,7 @@ type="submit"
       Listado de Colaboradores
     </h4>
     <ul> 
-      {colaboradores.map( ({id,nombre,correo})  => <li key={id}>{nombre} | {correo}
-      </li>)}
+      {colaboradores.map(({id,nombre,correo}) => <li key={id}>{nombre} | {correo}</li>)}
     </ul>
 </div>
 
